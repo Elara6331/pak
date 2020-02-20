@@ -242,7 +242,9 @@ func main()  {
 	fmt.Println("Running:", strings.Title(similarTo[0]), "using", strings.Title(packageManagerCommand))
 	if len(similarTo) == 1 && len(args) >= 2 {
 		if useRootBool {
-			command := exec.Command(rootCommand, packageManagerCommand, similarTo[0], strings.Join(args[1:], " "))
+			cmdArr := []string{rootCommand, packageManagerCommand, similarTo[0], strings.Join(args[1:], " ")}
+			cmdStr := strings.Join(cmdArr, " ")
+			command := exec.Command("bash", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -252,7 +254,9 @@ func main()  {
 				log.Fatal(error)
 			}
 		} else {
-			command := exec.Command(packageManagerCommand, similarTo[0], strings.Join(args[1:], " "))
+			cmdArr :=[]string{packageManagerCommand, similarTo[0], strings.Join(args[1:], " ")}
+			cmdStr := strings.Join(cmdArr, " ")
+			command := exec.Command("bash", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -269,7 +273,9 @@ func main()  {
 		os.Exit(1)
 	} else {
 		if useRootBool {
-			command := exec.Command(rootCommand, packageManagerCommand, similarTo[0])
+			cmdArr :=[]string{rootCommand, packageManagerCommand, similarTo[0]}
+			cmdStr := strings.Join(cmdArr, " ")
+			command := exec.Command("bash", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -279,7 +285,9 @@ func main()  {
 				log.Fatal(error)
 			}
 		} else {
-			command := exec.Command(rootCommand, packageManagerCommand, similarTo[0])
+			cmdArr :=[]string{packageManagerCommand, similarTo[0]}
+			cmdStr := strings.Join(cmdArr, " ")
+			command := exec.Command("bash", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
