@@ -23,3 +23,8 @@ pacinstall: plugins/pacman/pak.cfg pak
 aptitude: plugins/aptitude/pak.cfg pak
 	install -Dm644 plugins/aptitude/pak.cfg $(DESTDIR)/etc/pak.cfg
 	install -Dm755 pak $(DESTDIR)/usr/bin/pak
+
+brewinstall: plugins/brew/pak.cfg pak
+	mount -uw /
+	install -m644 plugins/brew/pak.cfg $(DESTDIR)/etc/pak.cfg
+	install -m755 pak $(DESTDIR)/usr/bin/pak

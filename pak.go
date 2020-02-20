@@ -244,7 +244,7 @@ func main()  {
 		if useRootBool {
 			cmdArr := []string{rootCommand, packageManagerCommand, similarTo[0], strings.Join(args[1:], " ")}
 			cmdStr := strings.Join(cmdArr, " ")
-			command := exec.Command("bash", "-c", cmdStr)
+			command := exec.Command("sh", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -256,7 +256,7 @@ func main()  {
 		} else {
 			cmdArr :=[]string{packageManagerCommand, similarTo[0], strings.Join(args[1:], " ")}
 			cmdStr := strings.Join(cmdArr, " ")
-			command := exec.Command("bash", "-c", cmdStr)
+			command := exec.Command("sh", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -275,7 +275,7 @@ func main()  {
 		if useRootBool {
 			cmdArr :=[]string{rootCommand, packageManagerCommand, similarTo[0]}
 			cmdStr := strings.Join(cmdArr, " ")
-			command := exec.Command("bash", "-c", cmdStr)
+			command := exec.Command("sh", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
@@ -287,7 +287,7 @@ func main()  {
 		} else {
 			cmdArr :=[]string{packageManagerCommand, similarTo[0]}
 			cmdStr := strings.Join(cmdArr, " ")
-			command := exec.Command("bash", "-c", cmdStr)
+			command := exec.Command("sh", "-c", cmdStr)
 			command.Stdout = os.Stdout
 			command.Stdin = os.Stdin
 			command.Stderr = os.Stderr
