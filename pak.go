@@ -35,8 +35,8 @@ func printHelpMessage(packageManagerCommand string, useRootBool bool, rootComman
 	fmt.Println("Current package manager is:", packageManagerCommand)
 	if useRootBool { fmt.Println("Using root with:", rootCommand, "\n") } else { fmt.Println("Not using root\n") }
 	fmt.Println("Usage: pak <command> [package]\nExample: pak in hello\n")
-	fmt.Println("The available commands are:\n", strings.Join(commands, "\n"),"\n")
-	fmt.Println("The available shortcuts are:\n", strings.Join(shortcuts, "\n"), "\n")
+	fmt.Println("The available commands are:\n" + strings.Join(commands, "\n"),"\n")
+	fmt.Println("The available shortcuts are:\n" + strings.Join(shortcuts, "\n"), "\n")
 	fmt.Println("The available flags are:\n--help, -h: Shows this help screen\n--root, -r: Bypass root error")
 	fmt.Println("misc: All", packageManagerCommand, "flags\n")
 	fmt.Println("Writing the whole command is uneccesary, just use enough to differentiate")
