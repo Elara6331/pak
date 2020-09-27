@@ -1,0 +1,15 @@
+name = "Pak"
+
+[dependencies]
+brew = []
+apt = []
+dnf = []
+yum = []
+zypper = []
+yay = []
+pacman = []
+
+[scripts]
+build = "build.sh"
+install = "install.sh"
+remove = "remove.sh"
