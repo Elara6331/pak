@@ -1,4 +1,5 @@
 name = "Pak"
+desc = "Wrapper written in Go designed for package managers to unify software management commands between distros"
 
 [dependencies]
 brew = []
