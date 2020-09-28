@@ -30,3 +30,7 @@ brewinstall: plugins/brew/pak.cfg pak
 	mount -uw /
 	install -m644 plugins/brew/pak.cfg $(DESTDIR)/etc/pak.cfg
 	install -m755 pak $(DESTDIR)/usr/bin/pak
+
+zyppinstall: plugins/zypper/pak.cfg pak
+	install -Dm644 plugins/zypper/pak.cfg $(DESTDIR)/etc/pak.cfg
+	install -Dm755 pak $(DESTDIR)/usr/bin/pak
