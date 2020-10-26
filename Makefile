@@ -34,3 +34,5 @@ brewinstall: plugins/brew/pak.cfg pak
 zyppinstall: plugins/zypper/pak.cfg pak
 	install -Dm644 plugins/zypper/pak.cfg $(DESTDIR)/etc/pak.cfg
 	install -Dm755 pak $(DESTDIR)/usr/bin/pak
+
+.PHONY: pak $(MAKECMDGOALS)
