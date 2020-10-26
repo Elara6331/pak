@@ -1,5 +1,7 @@
 # Pak
 #### Wrapper written in Go designed for package managers to unify software management commands between distros
+[![Build status](https://ci.appveyor.com/api/projects/status/e4yacqd78gkte8a0?svg=true)](https://ci.appveyor.com/project/moussaelianarsen/pak)
+[![Download Binary](https://img.shields.io/static/v1.svg?label=download&message=binary&color=blue)](https://minio.arsenm.dev/minio/pak/)
 
 ---
 
