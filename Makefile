@@ -2,6 +2,7 @@ GOBUILD ?= go build
 
 pak: main.go
 	$(GOBUILD)
+	
 installbinonly: pak
 	install -Dm755 pak $(DESTDIR)/usr/bin/pak
 
