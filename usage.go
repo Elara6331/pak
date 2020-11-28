@@ -6,7 +6,7 @@ import (
 )
 
 // Print help screen
-func printHelpMessage(packageManagerCommand string, useRootBool bool, rootCommand string, commands []string, shortcuts []string, isOverridden bool) {
+func printHelpMessage(packageManagerCommand string, useRootBool bool, rootCommand string, commands []string, shortcuts []string, shortcutMappings []string, isOverridden bool) {
 	fmt.Println("Arsen Musayelyan's Package Manager Wrapper")
 	fmt.Print("Current package manager is: ", packageManagerCommand)
 	if isOverridden { fmt.Println(" (overridden)") } else { fmt.Print("\n") }
@@ -19,7 +19,7 @@ func printHelpMessage(packageManagerCommand string, useRootBool bool, rootComman
 	fmt.Println(strings.Join(commands, "\n"))
 	fmt.Println()
 	fmt.Println("The available shortcuts are:")
-	fmt.Println(strings.Join(shortcuts, "\n"))
+	for index, element := range shortcuts { fmt.Println(element + ":", shortcutMappings[index]) }
 	fmt.Println()
 	fmt.Println("The available flags are:")
 	fmt.Println("--help, -h: Shows this help screen")

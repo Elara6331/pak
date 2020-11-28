@@ -119,7 +119,7 @@ func main()  {
 
 	// Displays help message if no arguments provided or -h/--help is passed
 	if len(args) == 0 || Contains(args, "-h") || Contains(args, "--help") || Contains(args, "help") {
-		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts, isOverridden)
+		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts, shortcutMappings, isOverridden)
 		os.Exit(0)
 	}
 
