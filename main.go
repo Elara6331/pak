@@ -52,8 +52,26 @@ func main()  {
 		}
 	}
 
+	// Define variables for config file location, and override state boolean
+	var configFileLocation string
+	var isOverridden bool
+	// Get PAK_MGR_OVERRIDE environment variable
+	override := os.Getenv("PAK_MGR_OVERRIDE")
+	// If override is set
+	if override != "" {
+		// Set configFileLocation to /etc/pak.d/{override}.cfg
+		configFileLocation = "/etc/pak.d/" + override + ".cfg"
+		// Set override state to true
+		isOverridden = true
+	} else {
+		// Otherwise, set configFileLocation to default config
+		configFileLocation = "/etc/pak.cfg"
+		// Set override state to false
+		isOverridden = false
+	}
+
 	// Parse config file removing all comments and empty lines
-	config, err := ioutil.ReadFile("/etc/pak.cfg")
+	config, err := ioutil.ReadFile(configFileLocation)
 	if err != nil { log.Fatal(err) }
 	commentRegex := regexp.MustCompile(`#.*`)
 	emptyLineRegex := regexp.MustCompile(`(?m)^\s*\n`)
@@ -101,7 +119,7 @@ func main()  {
 
 	// Displays help message if no arguments provided or -h/--help is passed
 	if len(args) == 0 || Contains(args, "-h") || Contains(args, "--help") || Contains(args, "help") {
-		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts)
+		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts, isOverridden)
 		os.Exit(0)
 	}
 
