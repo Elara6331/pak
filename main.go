@@ -130,20 +130,20 @@ func main()  {
 		distance = append(distance, JaroWinkler(command, args[0], 1, 0))
 	}
 
+	// Deals with shortcuts
+	for index, shortcut := range shortcuts {
+		// If the first argument is a shortcut and similarTo does not already contain its mapping, append it
+		if args[0] == shortcut && !Contains(similarTo, shortcutMappings[index]) {
+			similarTo = append(similarTo, shortcutMappings[index])
+		}
+	}
+
 	// Compares each distance to the max of the distance slice and appends the closest command to similarTo
 	for index, element := range distance {
 		// If current element is the closest to the first argument
 		if element == Max(distance) {
 			// Append command at same index as distance to similarTo
 			similarTo = append(similarTo, commands[index])
-		}
-	}
-
-	// Deals with shortcuts
-	for index, shortcut := range shortcuts {
-		// If the first argument is a shortcut and similarTo does not already contain its mapping, append it
-		if args[0] == shortcut && !Contains(similarTo, shortcutMappings[index]) {
-			similarTo = append(similarTo, shortcutMappings[index])
 		}
 	}
 
