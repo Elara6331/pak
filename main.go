@@ -19,6 +19,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -37,20 +38,38 @@ func main()  {
 	currentUser, err := user.Current()
 	if err != nil { log.Fatal(err) }
 
+	// Create help flags
+	var helpFlagGiven bool
+	flag.BoolVar(&helpFlagGiven, "help", false, "Show help screen")
+	flag.BoolVar(&helpFlagGiven, "h", false, "Show help screen (shorthand)")
+
 	// Check to make sure root is not being used unless -r/--root specified
-	if !Contains(args, "-r") && !Contains(args, "--root") {
+	var rootCheckBypass bool
+	// Create --root and -r flags for root check bypass
+	flag.BoolVar(&rootCheckBypass,"root", false, "Bypass root check")
+	flag.BoolVar(&rootCheckBypass,"r", false, "Bypass root check (shorthand)")
+	// Parse arguments for flags
+	flag.Parse()
+
+	// If flag not given
+	if !rootCheckBypass {
+		// If current user is root
 		if strings.Contains(currentUser.Username, "root") {
+			// Print warning message and exit
 			fmt.Println("Do not run as root, this program will invoke root for you if selected in config.")
 			fmt.Println("If you would like to bypass this, run this command with -r or --root.")
 			os.Exit(1)
 		}
-	} else {
-		if Contains(args, "-r") {
-			args = removeAtIndex(args, Find(args, "-r"))
-		} else if Contains(args, "--root") {
-			args = removeAtIndex(args, Find(args, "--root"))
-		}
 	}
+
+	// Create regex to remove all flags using ";;;" as it is uncommon to use in command line
+	flagRegex := regexp.MustCompile(`-+[^;]*;;;`)
+	// Join args into string
+	argsStr := strings.Join(args, ";;;")
+	// Remove all flags from join args
+	argsStr = flagRegex.ReplaceAllString(argsStr, "")
+	// Separate args back into slice
+	args = strings.Split(argsStr, ";;;")
 
 	// Define variables for config file location, and override state boolean
 	var configFileLocation string
@@ -118,7 +137,7 @@ func main()  {
 	var similarTo []string
 
 	// Displays help message if no arguments provided or -h/--help is passed
-	if len(args) == 0 || Contains(args, "-h") || Contains(args, "--help") || Contains(args, "help") {
+	if len(args) == 0 || helpFlagGiven || Contains(args, "help") {
 		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts, shortcutMappings, isOverridden)
 		os.Exit(0)
 	}
@@ -149,9 +168,10 @@ func main()  {
 
 	// If similarTo is still empty, log it fatally as something is wrong with the config or the code
 	if len(similarTo) == 0 { log.Fatalln("This command does not match any known commands or shortcuts") }
-
+	// Anonymous function to decide whether to print (overridden)
+	printOverridden := func() string { if isOverridden { return "(overridden)" } else { return "" } }
 	// Print text showing command being run and package manager being used
-	fmt.Println("Running:", strings.Title(similarTo[0]), "using", strings.Title(packageManagerCommand))
+	fmt.Println("Running:", strings.Title(similarTo[0]), "using", strings.Title(packageManagerCommand), printOverridden())
 	// Run package manager with the proper arguments passed if more than one argument exists
 	var cmdArr []string
 	// If root is to be used, append it to cmdArr
