@@ -6,11 +6,11 @@ import (
 )
 
 // Print help screen
-func printHelpMessage(packageManagerCommand string, useRootBool bool, rootCommand string, commands []string, shortcuts []string, shortcutMappings []string, isOverridden bool) {
+func printHelpMessage(packageManagerCommand string, useRoot bool, rootCommand string, commands []string, shortcuts []string, shortcutMappings []string, isOverridden bool) {
 	fmt.Println("Arsen Musayelyan's Package Manager Wrapper")
 	fmt.Print("Current package manager is: ", packageManagerCommand)
 	if isOverridden { fmt.Println(" (overridden)") } else { fmt.Print("\n") }
-	if useRootBool { fmt.Println("Using root with command:", rootCommand) } else { fmt.Println("Not using root") }
+	if useRoot { fmt.Println("Using root with command:", rootCommand) } else { fmt.Println("Not using root") }
 	fmt.Println()
 	fmt.Println("Usage: pak <command> [package]")
 	fmt.Println("Example: pak in hello")

@@ -21,6 +21,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/pelletier/go-toml"
 	"io/ioutil"
 	"log"
 	"os"
@@ -91,54 +92,38 @@ func main()  {
 
 	// Parse config file removing all comments and empty lines
 	config, err := ioutil.ReadFile(configFileLocation)
-	if err != nil { log.Fatal(err) }
-	commentRegex := regexp.MustCompile(`#.*`)
-	emptyLineRegex := regexp.MustCompile(`(?m)^\s*\n`)
-	parsedConfig := commentRegex.ReplaceAllString(string(config), "")
-	parsedConfig = emptyLineRegex.ReplaceAllString(parsedConfig, "")
-
-	cfg := strings.Split(parsedConfig, "\n")
-	//fmt.Println(cfg) //DEBUG
+	parsedConfig, _ := toml.Load(string(config))
 
 	// Set first line of config to variable
-	packageManagerCommand := cfg[0]
+	packageManagerCommand := parsedConfig.Get("packageManager").(string)
 	//fmt.Println(packageManagerCommand) //DEBUG
 
 	// Parse list of commands in config line 2 and set to variable as array
-	commands := strings.Split(cfg[1], ",")
+	commands := InterfaceToString(parsedConfig.Get("commands").([]interface{}))
 	//fmt.Println(commands) //DEBUG
 
 	// Set the root option in config line 3 to a variable
-	useRoot := cfg[2]
+	useRoot := parsedConfig.Get("useRoot").(bool)
 	//fmt.Println(useRoot) //DEBUG
 
 	// Set command to use to invoke root at config line 4 to a variable
-	rootCommand := cfg[3]
+	rootCommand := parsedConfig.Get("rootCommand").(string)
 	//fmt.Println(rootCommand) //DEBUG
 
 	// Parse list of shortcuts in config and line 5 set to variable as an array
-	shortcuts := strings.Split(cfg[4], ",")
+	shortcuts := InterfaceToString(parsedConfig.Get("shortcuts").([]interface{}))
 	//fmt.Println(shortcuts) //DEBUG
 
 	// Parse list of shortcuts in config line 6 and set to variable as array
-	shortcutMappings := strings.Split(cfg[5], ",")
+	shortcutMappings := InterfaceToString(parsedConfig.Get("shortcutMappings").([]interface{}))
 	//fmt.Println(shortcutMappings) //DEBUG
-
-	// Check if config file allows root and set boolean to a variable
-	var useRootBool bool
-	if useRoot == "yes" {
-		useRootBool = true
-	} else if useRoot == "no" {
-		useRootBool = false
-	}
-	//fmt.Println(useRootBool) //DEBUG
 
 	// Create similar to slice to put all matched commands into
 	var similarTo []string
 
 	// Displays help message if no arguments provided or -h/--help is passed
 	if len(args) == 0 || helpFlagGiven || Contains(args, "help") {
-		printHelpMessage(packageManagerCommand, useRootBool, rootCommand, commands, shortcuts, shortcutMappings, isOverridden)
+		printHelpMessage(packageManagerCommand, useRoot, rootCommand, commands, shortcuts, shortcutMappings, isOverridden)
 		os.Exit(0)
 	}
 
@@ -175,7 +160,7 @@ func main()  {
 	// Run package manager with the proper arguments passed if more than one argument exists
 	var cmdArr []string
 	// If root is to be used, append it to cmdArr
-	if useRootBool { cmdArr = append(cmdArr, rootCommand) }
+	if useRoot { cmdArr = append(cmdArr, rootCommand) }
 	// Create slice with all commands and arguments for the package manager
 	cmdArr = append(cmdArr, []string{packageManagerCommand, similarTo[0]}...)
 	// If greater than 2 arguments, append them to cmdArr

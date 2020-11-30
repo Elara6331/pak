@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // Remove an element at an index from a slice
 func removeAtIndex(s []string, index int) []string {
 	return append(s[:index], s[index+1:]...)
@@ -36,4 +38,12 @@ func Find(slice []string, val string) int {
 		}
 	}
 	return -1
+}
+
+func InterfaceToString(interfaceSlice []interface{}) []string {
+	returnedSlice := make([]string, len(interfaceSlice))
+	for index, element := range interfaceSlice {
+		returnedSlice[index] = fmt.Sprint(element)
+	}
+	return returnedSlice
 }
