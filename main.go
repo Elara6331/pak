@@ -64,11 +64,11 @@ func main()  {
 	}
 
 	// Create regex to remove all flags using ";;;" as it is uncommon to use in command line
-	flagRegex := regexp.MustCompile(`-+[^;]*;;;`)
+	flagRegex := regexp.MustCompile(`(?m)(;;;|^)-+[^;]*;;;`)
 	// Join args into string
 	argsStr := strings.Join(args, ";;;")
 	// Remove all flags from join args
-	argsStr = flagRegex.ReplaceAllString(argsStr, "")
+	argsStr = flagRegex.ReplaceAllString(argsStr, "$1")
 	// Separate args back into slice
 	args = strings.Split(argsStr, ";;;")
 
