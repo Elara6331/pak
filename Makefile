@@ -1,33 +1,15 @@
 GOBUILD ?= go build
 
-pak: main.go
+all: main.go
 	$(GOBUILD)
+
+install: PAK_CFG_MGR ?= apt
+install: pak.toml pak
+	install -Dm755 pak $(DESTDIR)/usr/bin/pak
+	sed 's/activeManager = ""/activeManager = "$(PAK_CFG_MGR)"/' pak.toml > pak-new.toml
+	install -Dm644 pak-new.toml $(DESTDIR)/etc/pak.toml
 
 installbinonly: pak
 	install -Dm755 pak $(DESTDIR)/usr/bin/pak
 
-aptinstall: install-config.sh pak.toml pak
-	install -Dm644 pak.toml $(DESTDIR)/etc/pak.toml
-	bash install-config.sh apt $(DESTDIR)
-
-snapinstall: install-config.sh pak.toml pak
-	install -Dm755 pak $(DESTDIR)/usr/bin/pak
-	bash install-config.sh snap $(DESTDIR)
-
-yayinstall: install-config.sh pak.toml pak
-	install -Dm755 pak $(DESTDIR)/usr/bin/pak
-	bash install-config.sh yay $(DESTDIR)
-
-pacinstall: install-config.sh pak.toml pak
-	install -Dm755 pak $(DESTDIR)/usr/bin/pak
-	bash install-config.sh pacman $(DESTDIR)
-
-aptitude: install-config.sh pak.toml pak
-	install -Dm755 pak $(DESTDIR)/usr/bin/pak
-	bash install-config.sh aptitude $(DESTDIR)
-
-brewinstall: install-config.sh pak.toml pak
-	install -Dm755 pak $(DESTDIR)/usr/bin/pak
-	bash install-config.sh brew $(DESTDIR)
-
-.PHONY: pak $(MAKECMDGOALS)
+.PHONY: all install installbinonly
