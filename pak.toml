@@ -1,0 +1,127 @@
+activeManager = ""
+rootCommand = "sudo"
+
+[managers]
+
+  [managers.apt]
+    useRoot = true
+  [managers.apt.commands]
+    install = "install"
+    remove = "remove"
+    search = "search"
+    list = "list"
+    refresh = "update"
+    upgrade = "upgrade"
+    download = "download"
+    clean = "clean"
+  [managers.apt.shortcuts]
+    arm = "autoremove"
+
+  [managers.aptitude]
+    useRoot = true
+  [managers.aptitude.commands]
+    install = "install"
+    remove = "remove"
+    download = "download"
+    refresh = "update"
+    upgrade = "upgrade"
+    full-upgrade = "full-upgrade"
+    safe-upgrade = "safe-upgrade"
+    clean = "clean"
+    hold = "hold"
+    unhold = "unhold"
+    mark-auto = "markauto"
+    unmark-auto = "unmarkauto"
+    why = "why"
+    whynot = "whynot"
+    reinstall = "reinstall"
+    search = "search"
+    show = "show"
+    list = "search '~i'"
+    changelog = "changelog"
+
+  [managers.brew]
+    useRoot = false
+  [managers.brew.commands]
+    install = "install"
+    remove = "remove"
+    reinstall = "reinstall"
+    cask-install = "cask install"
+    cask-remove = "cask remove"
+    cask-reinstall = "cask reinstall"
+    cask = "cask"
+    list = "list"
+    refresh = "update"
+    upgrade = "upgrade"
+    search = "search"
+    doctor = "doctor"
+    edit = "edit"
+
+  [managers.snap]
+    useRoot = true
+  [managers.snap.commands]
+    install = "install"
+    remove = "remove"
+    upgrade = "refresh"
+    downgrade = "revert"
+    run = "run"
+    download = "download"
+
+  [managers.npm]
+    useRoot = false
+  [managers.npm.commands]
+    whoami = "whoami"
+    view = "view"
+    version = "version"
+    update = "update"
+    test = "test"
+    stop = "stop"
+    start = "start"
+    publish = "publish"
+    prune = "prune"
+    deprecate = "deprecate"
+    doctor = "doctor"
+    logout = "logout"
+    login = "login"
+    list = "list"
+    link = "link"
+    rebuild = "rebuild"
+    repo = "repo"
+    search = "search"
+    docs = "docs"
+    create = "create"
+    remove = "uninstall"
+    install = "install"
+
+  [managers.pacman]
+    useRoot = true
+  [managers.pacman.commands]
+    install = "-S"
+    remove = "-R"
+    upgrade = "-Syu"
+    update = "-Su"
+    refresh = "-Sy"
+    autoremove = "-Rss $(pacman -Qdtq)"
+    search = "-Ss"
+    list = "-Qi"
+    file-refresh = "-Fy"
+    file-search = "-Fx"
+  [managers.pacman.shortcuts]
+    arm = "-Rss $(pacman -Qdtq)"
+
+  [managers.yay]
+    useRoot = false
+  [managers.yay.commands]
+    install = "-S"
+    remove = "-R"
+    upgrade = "-Syu"
+    update = "-Su"
+    refresh = "-Sy"
+    autoremove = "-Rss $(yay -Qdtq)"
+    search = "-Ss"
+    list = "-Qi"
+    file-refresh = "-Fy"
+    file-search = "-Fx"
+    interactive = ""
+  [managers.yay.shortcuts]
+  arm = "-Rss $(yay -Qdtq)"

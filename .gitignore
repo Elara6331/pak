@@ -2,4 +2,5 @@ pak
 pak-linux-x86_64
 pak-linux-aarch64
 pak-macos
+pak-new.toml
 .idea

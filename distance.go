@@ -41,7 +41,6 @@ func Jaro(a, b string) float64 {
 	return ((matches / la) + (matches / lb) + (matches-transposes)/matches) / 3.0
 }
 
-
 func JaroWinkler(a, b string, boostThreshold float64, prefixSize int) float64 {
 	j := Jaro(a, b)
 
