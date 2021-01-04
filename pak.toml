@@ -93,6 +93,9 @@ rootCommand = "sudo"
     remove = "uninstall"
     install = "install"
 
+  [managers.pip]
+    useRoot = false
+
   [managers.pacman]
     useRoot = true
   [managers.pacman.commands]
@@ -124,4 +127,50 @@ rootCommand = "sudo"
     file-search = "-Fx"
     interactive = ""
   [managers.yay.shortcuts]
-  arm = "-Rss $(yay -Qdtq)"
+    arm = "-Rss $(yay -Qdtq)"
+
+  [managers.apk]
+    useRoot = true
+  [managers.apk.commands]
+    install = "add"
+    remove = "del"
+    fix = "fix"
+    refresh = "update"
+    upgrade = "upgrade"
+    search = "search"
+    list = "info"
+
+  [managers.dnf]
+    useRoot = true
+  [managers.dnf.commands]
+    install = "install"
+    remove =  "remove"
+    reinstall = "reinstall"
+    list = "list"
+    search = "search"
+    clean = "clean"
+    downgrade = "downgrade"
+
+  [managers.yum]
+    useRoot = true
+  [managers.yum.commands]
+    install = "install"
+    remove =  "remove"
+    reinstall = "reinstall"
+    list = "list"
+    search = "search"
+    clean = "clean"
+    downgrade = "downgrade"
+
+  [managers.zypper]
+    useRoot = true
+  [managers.zypper.commands]
+    install = "install"
+    remove = "remove"
+    refresh = "refresh"
+    clean = "clean"
+    addrepo = "addrepo"
+    removerepo = "removerepo"
+    list-repos = "repos"
+    list = "packages -i"
+    search = "search"

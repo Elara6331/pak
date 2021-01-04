@@ -20,45 +20,37 @@ package main
 
 import (
 	"fmt"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	flag "github.com/spf13/pflag"
-	"log"
 	"os"
 	"os/exec"
 	"os/user"
 	"strings"
 )
 
+var Log = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
 func main() {
 
-	// Check which currentUser is running command
-	currentUser, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Create help flags
+	// Create help flag
 	var helpFlagGiven bool
 	flag.BoolVarP(&helpFlagGiven, "help", "h", false, "Show help screen")
-
-	// Check to make sure root is not being used unless -r/--root specified
-	var rootCheckBypass bool
-	// Create --root and -r flags for root check bypass
-	flag.BoolVarP(&rootCheckBypass, "root", "r", false, "Bypass root check")
-
+	// Create package manager override flag
 	var packageManagerOverride string
 	flag.StringVarP(&packageManagerOverride, "package-manager", "p", os.Getenv("PAK_MGR_OVERRIDE"), "Override package manager wrapped by pak")
 	// Parse arguments for flags
 	flag.Parse()
 
-	// If flag not given
-	if !rootCheckBypass {
-		// If current user is root
-		if strings.Contains(currentUser.Username, "root") {
-			// Print warning message and exit
-			fmt.Println("Do not run as root, this program will invoke root for you if selected in config.")
-			fmt.Println("If you would like to bypass this, run this command with -r or --root.")
-			os.Exit(1)
-		}
+	// Check which user is running command
+	currentUser, err := user.Current()
+	if err != nil {
+		Log.Fatal().Err(err).Msg("Error getting current user")
+	}
+	// If running as root
+	if strings.Contains(currentUser.Username, "root") {
+		// Print warning message
+		Log.Warn().Msg("Running as root may cause extraneous root invocation")
 	}
 
 	// Get arguments without flags
@@ -98,7 +90,7 @@ func main() {
 	//fmt.Println(shortcuts) //DEBUG
 
 	// Create similar to slice to put all matched commands into
-	var similarTo []string
+	similarTo := []string{}
 
 	// Displays help message if no arguments provided or -h/--help is passed
 	if len(args) == 0 || helpFlagGiven || Contains(args, "help") {
@@ -132,7 +124,7 @@ func main() {
 
 	// If similarTo is still empty, log it fatally as something is wrong with the config or the code
 	if len(similarTo) == 0 {
-		log.Fatalln("This command does not match any known commands or shortcuts")
+		Log.Fatal().Msg("This command does not match any known commands or shortcuts")
 	}
 	// Anonymous function to decide whether to print (overridden)
 	printOverridden := func() string {
@@ -168,7 +160,6 @@ func main() {
 	err = command.Run()
 	// If command returned an error, log fatally with explanation
 	if err != nil {
-		fmt.Println("Error received from child process")
-		log.Fatal(err)
+		Log.Fatal().Err(err).Msg("Error received from child process")
 	}
 }
