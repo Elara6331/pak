@@ -14,6 +14,10 @@ rootCommand = "sudo"
     upgrade = "upgrade"
     download = "download"
     clean = "clean"
+    file-refresh = "cmd:apt-file update"
+    file-search = "cmd:apt-file search"
+    add-key = "cmd:apt-key add"
+    add-repo = "cmd:add-apt-repository"
   [managers.apt.shortcuts]
     arm = "autoremove"
 
@@ -39,6 +43,10 @@ rootCommand = "sudo"
     show = "show"
     list = "search '~i'"
     changelog = "changelog"
+    file-refresh = "cmd:apt-file update"
+    file-search = "cmd:apt-file search"
+    add-key = "cmd:apt-key add"
+    add-repo = "cmd:add-apt-repository"
 
   [managers.brew]
     useRoot = false

@@ -142,8 +142,14 @@ func main() {
 	if useRoot {
 		cmdArr = append(cmdArr, rootCommand)
 	}
-	// Create slice with all commands and arguments for the package manager
-	cmdArr = append(cmdArr, config.ActiveManager, similarTo[0])
+	// If command to be run has a prefix of "cmd:"
+	if strings.HasPrefix(similarTo[0], "cmd:") {
+		// Append the command to the slice without the prefix
+		cmdArr = append(cmdArr, strings.TrimPrefix(similarTo[0], "cmd:"))
+	} else {
+		// Otherwise, append all commands and arguments for the package manager to slice
+		cmdArr = append(cmdArr, config.ActiveManager, similarTo[0])
+	}
 	// If greater than 2 arguments, append them to cmdArr
 	if len(args) >= 2 {
 		cmdArr = append(cmdArr, strings.Join(args[1:], " "))
