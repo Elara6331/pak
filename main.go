@@ -20,6 +20,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/alessio/shellescape"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	flag "github.com/spf13/pflag"
@@ -155,7 +156,7 @@ func main() {
 		cmdArr = append(cmdArr, strings.Join(args[1:], " "))
 	}
 	// Create space separated string from cmdArr
-	cmdStr := strings.Join(cmdArr, " ")
+	cmdStr := shellescape.QuoteCommand(cmdArr)
 	// Instantiate exec.Command object with command sh, flag -c, and cmdStr
 	command := exec.Command("sh", "-c", cmdStr)
 	// Set standard outputs for command
