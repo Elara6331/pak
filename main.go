@@ -153,10 +153,10 @@ func main() {
 	}
 	// If greater than 2 arguments, append them to cmdArr
 	if len(args) >= 2 {
-		cmdArr = append(cmdArr, strings.Join(args[1:], " "))
+		cmdArr = append(cmdArr, shellescape.QuoteCommand(args[1:]))
 	}
 	// Create space separated string from cmdArr
-	cmdStr := shellescape.QuoteCommand(cmdArr)
+	cmdStr := strings.Join(cmdArr, " ")
 	// Instantiate exec.Command object with command sh, flag -c, and cmdStr
 	command := exec.Command("sh", "-c", cmdStr)
 	// Set standard outputs for command
