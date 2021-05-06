@@ -5,7 +5,7 @@ import (
 )
 
 // Print help screen
-func printHelpMessage(packageManagerCommand string, useRoot bool, rootCommand string, commands map[string]string, shortcuts map[string]string, isOverridden bool) {
+func printHelpMessage(packageManagerCommand, rootCommand string, commands, shortcuts map[string]string, useRoot, isOverridden bool) {
 	fmt.Println("Arsen Musayelyan's Package Manager Wrapper")
 	fmt.Print("Current package manager is: ", packageManagerCommand)
 	if isOverridden {
