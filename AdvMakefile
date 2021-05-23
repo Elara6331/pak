@@ -1,0 +1,39 @@
+defaultName = "pak"
+defaultTarget = "build"
+availableManagers = [
+    "apk",
+    "apt",
+    "aptitude",
+    "brew",
+    "dnf",
+    "yum",
+    "npm",
+    "pacman",
+    "yay",
+    "pip",
+    "snap",
+    "zypper"
+    ]
+
+
+def pak_build():
+    if lookPath("go") == -1:
+        log("Go must be installed to compile pak", level="fatal")
+    execute("go build")
+
+
+def pak_install():
+    mappings = {"PKGMANAGER": userChoice("Choose package manager", availableManagers)}
+    expandFile("pak.toml", mappings)
+    execute("""
+    install -Dm755 pak $DESTDIR/usr/bin/pak
+    install -Dm644 pak.toml $DESTDIR/etc/pak.toml
+    """)
+
+
+def pak_install_noninteractive():
+    expandFile("pak.toml", {"PKGMANAGER": getEnv("PAK_CFG_MGR")})
+    execute("""
+    install -Dm755 pak $DESTDIR/usr/bin/pak
+    install -Dm644 pak.toml $DESTDIR/etc/pak.toml
+    """)

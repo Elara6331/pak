@@ -1,4 +1,4 @@
-activeManager = ""
+activeManager = "$PKGMANAGER"
 rootCommand = "sudo"
 
 [managers]
