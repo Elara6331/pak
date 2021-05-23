@@ -20,6 +20,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/alessio/shellescape"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	flag "github.com/spf13/pflag"
@@ -34,11 +35,9 @@ var Log = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 func main() {
 
 	// Create help flag
-	var helpFlagGiven bool
-	flag.BoolVarP(&helpFlagGiven, "help", "h", false, "Show help screen")
+	helpFlagGiven := flag.BoolP("help", "h", false, "Show help screen")
 	// Create package manager override flag
-	var packageManagerOverride string
-	flag.StringVarP(&packageManagerOverride, "package-manager", "p", os.Getenv("PAK_MGR_OVERRIDE"), "Override package manager wrapped by pak")
+	packageManagerOverride := flag.StringP("package-manager", "p", os.Getenv("PAK_MGR_OVERRIDE"), "Override package manager wrapped by pak")
 	// Parse arguments for flags
 	flag.Parse()
 
@@ -63,9 +62,9 @@ func main() {
 	config := NewConfig("/etc/pak.toml")
 
 	// If override is set
-	if packageManagerOverride != "" {
+	if *packageManagerOverride != "" {
 		// Set active package manager to override
-		config.ActiveManager = packageManagerOverride
+		config.ActiveManager = *packageManagerOverride
 		// Set override state to true
 		isOverridden = true
 	} else {
@@ -93,8 +92,8 @@ func main() {
 	similarTo := []string{}
 
 	// Displays help message if no arguments provided or -h/--help is passed
-	if len(args) == 0 || helpFlagGiven || Contains(args, "help") {
-		printHelpMessage(config.ActiveManager, useRoot, rootCommand, commands, shortcuts, isOverridden)
+	if len(args) == 0 || *helpFlagGiven || Contains(args, "help") {
+		printHelpMessage(config.ActiveManager, rootCommand, commands, shortcuts, useRoot, isOverridden)
 		os.Exit(0)
 	}
 
@@ -126,16 +125,14 @@ func main() {
 	if len(similarTo) == 0 {
 		Log.Fatal().Msg("This command does not match any known commands or shortcuts")
 	}
-	// Anonymous function to decide whether to print (overridden)
-	printOverridden := func() string {
-		if isOverridden {
-			return "(overridden)"
-		} else {
-			return ""
-		}
+	var overriddenStr string
+	if isOverridden {
+		overriddenStr = "(overridden)"
+	} else {
+		overriddenStr = ""
 	}
 	// Print text showing command being run and package manager being used
-	fmt.Println("Running:", strings.Title(GetKey(commands, similarTo[0])), "using", strings.Title(config.ActiveManager), printOverridden())
+	fmt.Println("Running:", strings.Title(GetKey(commands, similarTo[0])), "using", strings.Title(config.ActiveManager), overriddenStr)
 	// Run package manager with the proper arguments passed if more than one argument exists
 	var cmdArr []string
 	// If root is to be used, append it to cmdArr
@@ -152,7 +149,7 @@ func main() {
 	}
 	// If greater than 2 arguments, append them to cmdArr
 	if len(args) >= 2 {
-		cmdArr = append(cmdArr, strings.Join(args[1:], " "))
+		cmdArr = append(cmdArr, shellescape.QuoteCommand(args[1:]))
 	}
 	// Create space separated string from cmdArr
 	cmdStr := strings.Join(cmdArr, " ")
