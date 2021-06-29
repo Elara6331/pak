@@ -1,4 +1,4 @@
-module pak
+module go.arsenm.dev/pak
 
 go 1.15
 
